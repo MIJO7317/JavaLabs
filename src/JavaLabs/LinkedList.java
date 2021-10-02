@@ -1,6 +1,6 @@
 package JavaLabs;
 
-public class LinkedList<T> implements List<T>
+public class LinkedList<T> implements List<T>, Cloneable
 {
     private class Node
     {
@@ -240,6 +240,19 @@ public class LinkedList<T> implements List<T>
     public int Size()
     {
         return size;
+    }
+
+    @Override
+    public List<T> clone()
+    {
+        LinkedList<T> clone = new LinkedList<>();
+        Node current_node = this.head;
+        for (int i=0; i<this.size; i++)
+        {
+            clone.Add(current_node.data);
+            current_node = current_node.next;
+        }
+        return clone;
     }
 
     private Node head; //Первый элемент списка

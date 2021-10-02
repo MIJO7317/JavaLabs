@@ -12,4 +12,5 @@ public interface List<T>
     int IndexOf(T element);
     boolean IsEmpty();
     int Size();
+    List<T> clone();
 }

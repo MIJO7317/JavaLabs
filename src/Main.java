@@ -1,6 +1,7 @@
 import JavaLabs.ArrayList;
 import JavaLabs.LinkedList;
 import JavaLabs.List;
+import JavaLabs.Map;
 
 public class Main
 {
@@ -12,27 +13,30 @@ public class Main
         list.Add(3);
         list.Add(4);
         //list.Add(new String("Smth"));
-        for (int i = 0; i<list.Size(); i++)
+        for (int i = 0; i < list.Size(); i++)
             System.out.println(list.Get(i));
         //list.Print();
         System.out.println();
         System.out.println(list.Remove(4));
         System.out.println();
         //list.Print();
-        for (int i = 0; i<list.Size(); i++)
+        for (int i = 0; i < list.Size(); i++)
             System.out.println(list.Get(i));
         System.out.println();
         System.out.println(list.Contains(null));
-        list.Add(10,null);
+        list.Add(10, null);
         System.out.println();
         System.out.println(list.Contains(null));
         System.out.println();
         list.Add(2, 15, 5);
         list.Set(-1, 20);
-        for (int i = 0; i<list.Size(); i++)
+        for (int i = 0; i < list.Size(); i++)
             System.out.println(list.Get(i));
         System.out.println();
         System.out.println(list.IndexOf(3));
         ArrayList.ChangeDefaultBufferSize(128);
+        Map<Integer, String> map = new Map<>(Map.LIST_TYPE.ARRAY_LIST);
+        map.Put(1, "Stas");
+        map.GetEntries().Set(0, new Map.Entry<>(5, "neStas"));
     }
 }

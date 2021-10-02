@@ -1,6 +1,6 @@
 package JavaLabs;
 
-public class ArrayList<T> implements List<T>
+public class ArrayList<T> implements List<T>, Cloneable
 {
     //Конструкторы:
 
@@ -179,6 +179,15 @@ public class ArrayList<T> implements List<T>
     public int Size()
     {
         return this.size;
+    }
+
+    @Override
+    public List<T> clone()
+    {
+        ArrayList<T> clone = new ArrayList<>();
+        for (int i=0; i<this.size; i++)
+            clone.Add(this.Get(i));
+        return clone;
     }
 
     public int Capacity()
