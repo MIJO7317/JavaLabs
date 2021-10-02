@@ -1,11 +1,14 @@
 package JavaLabs;
 
-public class ArrayList<T> {
+public class ArrayList<T> implements List<T>
+{
     //Конструкторы:
+
     public ArrayList()
     {
         this(0);
     }
+
     public ArrayList(int size)
     {
         this.size = size;
@@ -15,6 +18,8 @@ public class ArrayList<T> {
     }
 
     //Методы:
+
+    @Override
     public void Add(T element)
     {
         //Проверка вместимости текущего массива
@@ -42,11 +47,13 @@ public class ArrayList<T> {
         }
         this.size++;
     }
+
+    @Override
     public void Add(int index, T element, int count)
     {
         //Проверка индекса на выходы из границ [0, this.size-1] справа
-        if (index >= this.size)
-            index = this.size - 1;
+        if (index > this.size)
+            index = this.size;
         //Проверка индекса на выходы из границ [0, this.size-1] слева
         if (index < 0)
             index = 0;
@@ -82,10 +89,14 @@ public class ArrayList<T> {
         //Изменение размера массива
         this.size += count;
     }
+
+    @Override
     public void Add(int index, T element)
     {
         this.Add(index, element, 1);
     }
+
+    @Override
     public T Get(int index)
     {
         if (index >= this.size)
@@ -94,6 +105,8 @@ public class ArrayList<T> {
             index = 0;
         return this.data[index];
     }
+
+    @Override
     public T Remove(int index)
     {
         if (index >= this.size)
@@ -107,6 +120,8 @@ public class ArrayList<T> {
         this.size--;
         return current_element;
     }
+
+    @Override
     public T Set(int index, T element)
     {
         if (index >= this.size)
@@ -117,6 +132,8 @@ public class ArrayList<T> {
         this.data[index] = element;
         return previous_element;
     }
+
+    @Override
     public boolean Contains(T element)
     {
         if(element == null)
@@ -133,6 +150,8 @@ public class ArrayList<T> {
         }
         return false;
     }
+
+    @Override
     public int IndexOf(T element)
     {
         if(element == null)
@@ -149,26 +168,27 @@ public class ArrayList<T> {
         }
         return -1;
     }
+
+    @Override
     public boolean IsEmpty()
     {
         return this.Size() == 0;
     }
-    public int Capacity()
-    {
-        return this.size + this.additional;
-    }
+
+    @Override
     public int Size()
     {
         return this.size;
     }
+
+    public int Capacity()
+    {
+        return this.size + this.additional;
+    }
+
     public static void ChangeDefaultBufferSize(int new_buffer_size)
     {
         ArrayList.DEFAULT_BUFFER_SIZE = new_buffer_size;
-    }
-    public void Print()
-    {
-        for(int i=0; i<this.Capacity(); i++)
-            System.out.println(data[i]);
     }
 
     //Приватные переменные
