@@ -1,43 +1,36 @@
 package JavaLabs;
 
-public class ArrayList<T> implements List<T>, Cloneable
-{
+public class ArrayList<T> implements List<T>, Cloneable {
     //Конструкторы:
 
-    public ArrayList()
-    {
+    public ArrayList() {
         this(0);
     }
 
-    public ArrayList(int size)
-    {
+    public ArrayList(int size) {
         this.size = size;
         this.buffer = DEFAULT_BUFFER_SIZE;
         this.additional = this.buffer;
-        this.data = (T[])new Object[this.Capacity()];
+        this.data = (T[]) new Object[this.capacity()];
     }
 
     //Методы:
 
     @Override
-    public void Add(T element)
-    {
+    public void add(T element) {
         //Проверка вместимости текущего массива
-        if (this.additional != 0)
-        {
+        if (this.additional != 0) {
             //Вставка element
             this.data[this.size] = element;
             //Изменение вместимости
             additional--;
-        }
-        else
-        {
+        } else {
             //Удвоение буффера
             this.buffer *= 2;
             //Изменение вместимости
             this.additional = this.buffer;
             //Выделение памяти под новый массив
-            T[] new_data = (T[])new Object[this.Capacity() + 1];
+            T[] new_data = (T[]) new Object[this.capacity() + 1];
             //Заполнение нового массива значениями из старого
             System.arraycopy(this.data, 0, new_data, 0, this.size);
             //Заполнение последней ячейки нового массива
@@ -49,8 +42,7 @@ public class ArrayList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public void Add(int index, T element, int count)
-    {
+    public void add(int index, T element, int count) {
         //Проверка индекса на выходы из границ [0, this.size-1] справа
         if (index > this.size)
             index = this.size;
@@ -58,8 +50,7 @@ public class ArrayList<T> implements List<T>, Cloneable
         if (index < 0)
             index = 0;
         //Проверка вместимости текущего массива
-        if (this.additional >= count)
-        {
+        if (this.additional >= count) {
             //Смещаем данные с позиции index вправо в количестве count
             System.arraycopy(this.data, index, this.data, index + count, this.size - index);
             //Заполняем освободившиеся ячейки в количестве count значениями element
@@ -67,13 +58,11 @@ public class ArrayList<T> implements List<T>, Cloneable
                 this.data[i] = element;
             //Изменение вместимости
             this.additional -= count;
-        }
-        else
-        {
+        } else {
             //Удвоение буффера
             this.buffer *= 2;
             //Выделение памяти под новый массив
-            T[] new_data = (T[])new Object[this.size + count + this.buffer];
+            T[] new_data = (T[]) new Object[this.size + count + this.buffer];
             //Заполнение нового массива значениями из старого
             System.arraycopy(this.data, 0, new_data, 0, index);
             //Заполнение нового массива передаваемыми элементами
@@ -91,29 +80,26 @@ public class ArrayList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public void Add(int index, T element)
-    {
-        this.Add(index, element, 1);
+    public void add(int index, T element) {
+        this.add(index, element, 1);
     }
 
     @Override
-    public T Get(int index)
-    {
+    public T get(int index) {
         if (index >= this.size)
-            index = this.size-1;
+            index = this.size - 1;
         if (index < 0)
             index = 0;
         return this.data[index];
     }
 
     @Override
-    public T Remove(int index)
-    {
+    public T remove(int index) {
         if (index >= this.size)
             index = this.size - 1;
         if (index < 0)
             index = 0;
-        T current_element = Get(index);
+        T current_element = get(index);
         System.arraycopy(this.data, index + 1, this.data, index, this.size - 1 - index);
         this.data[this.size - 1] = null;
         this.additional++;
@@ -122,28 +108,23 @@ public class ArrayList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public T Set(int index, T element)
-    {
+    public T set(int index, T element) {
         if (index >= this.size)
-            index = this.size-1;
+            index = this.size - 1;
         if (index < 0)
             index = 0;
-        T previous_element = this.Get(index);
+        T previous_element = this.get(index);
         this.data[index] = element;
         return previous_element;
     }
 
     @Override
-    public boolean Contains(T element)
-    {
-        if(element == null)
-        {
+    public boolean contains(T element) {
+        if (element == null) {
             for (int i = 0; i < this.size; i++)
                 if (this.data[i] == null)
                     return true;
-        }
-        else
-        {
+        } else {
             for (int i = 0; i < this.size; i++)
                 if (element.equals(this.data[i]))
                     return true;
@@ -152,16 +133,12 @@ public class ArrayList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public int IndexOf(T element)
-    {
-        if(element == null)
-        {
+    public int indexOf(T element) {
+        if (element == null) {
             for (int i = 0; i < this.size; i++)
                 if (this.data[i] == null)
                     return i;
-        }
-        else
-        {
+        } else {
             for (int i = 0; i < this.size; i++)
                 if (element.equals(this.data[i]))
                     return i;
@@ -170,38 +147,33 @@ public class ArrayList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public boolean IsEmpty()
-    {
-        return this.Size() == 0;
+    public boolean isEmpty() {
+        return this.size() == 0;
     }
 
     @Override
-    public int Size()
-    {
+    public int size() {
         return this.size;
     }
 
     @Override
-    public List<T> clone()
-    {
+    public List<T> clone() {
         ArrayList<T> clone = new ArrayList<>();
-        for (int i=0; i<this.size; i++)
-            clone.Add(this.Get(i));
+        for (int i = 0; i < this.size; i++)
+            clone.add(this.get(i));
         return clone;
     }
 
-    public int Capacity()
-    {
+    public int capacity() {
         return this.size + this.additional;
     }
 
-    public static void ChangeDefaultBufferSize(int new_buffer_size)
-    {
+    public static void changeDefaultBufferSize(int new_buffer_size) {
         ArrayList.DEFAULT_BUFFER_SIZE = new_buffer_size;
     }
 
     //Приватные переменные
-    private static int DEFAULT_BUFFER_SIZE = 32;
+    private static int DEFAULT_BUFFER_SIZE = 16;
     private T[] data;
     private int size;
     private int additional;

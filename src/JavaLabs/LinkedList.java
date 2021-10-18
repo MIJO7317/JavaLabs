@@ -1,27 +1,23 @@
 package JavaLabs;
 
-public class LinkedList<T> implements List<T>, Cloneable
-{
-    private class Node
-    {
+public class LinkedList<T> implements List<T>, Cloneable {
+    private class Node {
         public T data;
         public Node next;
         public Node prev;
     }
 
-    public LinkedList()
-    {
+    public LinkedList() {
         this.size = 0;
         this.head = this.tail = null;
     }
 
     @Override
-    public void Add(T element)
-    {
+    public void add(T element) {
         Node new_node = new Node();
         new_node.data = element;
         new_node.prev = this.tail;
-        if(this.tail != null)
+        if (this.tail != null)
             this.tail.next = new_node;
         else
             this.head = new_node;
@@ -30,32 +26,26 @@ public class LinkedList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public void Add(int index, T element, int count)
-    {
-        if(index > this.size)
+    public void add(int index, T element, int count) {
+        if (index > this.size)
             index = this.size;
-        if(index < 0)
+        if (index < 0)
             index = 0;
         Node current_node;
-        if(index < this.size/2)
-        {
+        if (index < this.size / 2) {
             current_node = this.head;
-            for (int i = 0;i<index;i++)
+            for (int i = 0; i < index; i++)
                 current_node = current_node.next;
-        }
-        else
-        {
-            if(index == this.size)
-            {
-                this.Add(element);
+        } else {
+            if (index == this.size) {
+                this.add(element);
                 return;
             }
             current_node = this.tail;
-            for (int i = this.size-1; i>index; i--)
+            for (int i = this.size - 1; i > index; i--)
                 current_node = current_node.prev;
         }
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             Node new_node = new Node();
             new_node.data = element;
             new_node.next = current_node;
@@ -69,84 +59,71 @@ public class LinkedList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public void Add(int index, T element)
-    {
-        this.Add(index, element, 1);
+    public void add(int index, T element) {
+        this.add(index, element, 1);
     }
 
     @Override
-    public T Get(int index)
-    {
-        if(index >= this.size)
-            index = this.size-1;
-        if(index < 0)
+    public T get(int index) {
+        if (index >= this.size)
+            index = this.size - 1;
+        if (index < 0)
             index = 0;
         Node current_node;
-        if(index < this.size/2)
-        {
+        if (index < this.size / 2) {
             current_node = this.head;
-            for (int i = 0;i<index;i++)
+            for (int i = 0; i < index; i++)
                 current_node = current_node.next;
-        }
-        else
-        {
+        } else {
             current_node = this.tail;
-            for (int i = this.size-1; i>index; i--)
+            for (int i = this.size - 1; i > index; i--)
                 current_node = current_node.prev;
         }
         return current_node.data;
     }
 
     @Override
-    public T Remove(int index)
-    {
-        if(index >= this.size)
-            index = this.size-1;
-        if(index < 0)
+    public T remove(int index) {
+        if (index >= this.size)
+            index = this.size - 1;
+        if (index < 0)
             index = 0;
         Node current_node;
-        if(index < this.size/2)
-        {
+        if (index < this.size / 2) {
             current_node = this.head;
-            for (int i = 0;i<index;i++)
+            for (int i = 0; i < index; i++)
                 current_node = current_node.next;
-        }
-        else
-        {
+        } else {
             current_node = this.tail;
-            for (int i = this.size-1; i>index; i--)
+            for (int i = this.size - 1; i > index; i--)
                 current_node = current_node.prev;
         }
-        if(current_node.prev != null)
+        if (current_node.prev != null)
             current_node.prev.next = current_node.next;
-        if(current_node.next != null)
+        if (current_node.next != null)
             current_node.next.prev = current_node.prev;
-        if(current_node.prev == null)
+        if (current_node.prev == null)
             this.head = current_node.next;
-        if(current_node.next == null)
+        if (current_node.next == null)
             this.tail = current_node.prev;
         this.size--;
         return current_node.data;
     }
 
     @Override
-    public T Set(int index, T element)
-    {
-        if(index >= this.size)
-            index = this.size-1;
-        if(index < 0)
+    public T set(int index, T element) {
+        if (index >= this.size)
+            index = this.size - 1;
+        if (index < 0)
             index = 0;
         Node current_node;
-        if(index < this.size/2)
-        {
+        if (index < this.size / 2) {
             current_node = this.head;
-            for (int i = 0;i<index;i++)
+            for (int i = 0; i < index; i++)
                 current_node = current_node.next;
-        }
-        else
-        {
+        } else {
             current_node = this.tail;
-            for (int i = this.size-1; i>index; i--)
+            for (int i = this.size - 1; i > index; i--)
                 current_node = current_node.prev;
         }
         T prev_data = current_node.data;
@@ -155,32 +132,26 @@ public class LinkedList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public boolean Contains(T element)
-    {
+    public boolean contains(T element) {
         Node left_node = this.head;
         Node right_node = this.tail;
-        if(element == null)
-        {
+        if (element == null) {
             if (this.size == 1)
                 return this.head.data == null;
-            for (int i = 0; i < (this.size + 1) / 2; i++)
-            {
+            for (int i = 0; i < (this.size + 1) / 2; i++) {
                 if (left_node.data == null || right_node.data == null)
                     return true;
                 left_node = left_node.next;
                 right_node = right_node.prev;
             }
-        }
-        else
-        {
+        } else {
             if (this.size == 1)
                 return this.head.data.equals(element);
-            for (int i = 0; i < (this.size + 1) / 2; i++)
-            {
-                if(left_node.data != null)
+            for (int i = 0; i < (this.size + 1) / 2; i++) {
+                if (left_node.data != null)
                     if (left_node.data.equals(element))
                         return true;
-                if(right_node.data != null)
+                if (right_node.data != null)
                     if (right_node.data.equals(element))
                         return true;
                 left_node = left_node.next;
@@ -191,17 +162,14 @@ public class LinkedList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public int IndexOf(T element)
-    {
+    public int indexOf(T element) {
         Node left_node = this.head;
         Node right_node = this.tail;
-        if(element == null)
-        {
+        if (element == null) {
             if (this.size == 1)
                 if (this.head.data == null)
                     return 0;
-            for (int i = 0; i < (this.size + 1) / 2; i++)
-            {
+            for (int i = 0; i < (this.size + 1) / 2; i++) {
                 if (left_node.data == null)
                     return i;
                 if (right_node.data == null)
@@ -209,18 +177,15 @@ public class LinkedList<T> implements List<T>, Cloneable
                 left_node = left_node.next;
                 right_node = right_node.prev;
             }
-        }
-        else
-        {
+        } else {
             if (this.size == 1)
-                if( this.head.data.equals(element) )
+                if (this.head.data.equals(element))
                     return 0;
-            for (int i = 0; i < (this.size + 1) / 2; i++)
-            {
-                if(left_node.data != null)
+            for (int i = 0; i < (this.size + 1) / 2; i++) {
+                if (left_node.data != null)
                     if (left_node.data.equals(element))
                         return i;
-                if(right_node.data != null)
+                if (right_node.data != null)
                     if (right_node.data.equals(element))
                         return this.size - 1 - i;
                 left_node = left_node.next;
@@ -231,28 +196,48 @@ public class LinkedList<T> implements List<T>, Cloneable
     }
 
     @Override
-    public boolean IsEmpty()
-    {
-        return this.Size() == 0;
+    public boolean isEmpty() {
+        return this.size() == 0;
     }
 
     @Override
-    public int Size()
-    {
+    public int size() {
         return size;
     }
 
     @Override
-    public List<T> clone()
-    {
+    public List<T> clone() {
         LinkedList<T> clone = new LinkedList<>();
         Node current_node = this.head;
-        for (int i=0; i<this.size; i++)
-        {
-            clone.Add(current_node.data);
+        for (int i = 0; i < this.size; i++) {
+            clone.add(current_node.data);
             current_node = current_node.next;
         }
         return clone;
+    }
+
+    public static <T extends Comparable<T>> LinkedList<T> merge(LinkedList<T> firstLinkedList, LinkedList<T> secondLinkedList) {
+        LinkedList<T> mergeLinkedList = new LinkedList<>();
+        int i = 0, j = 0;
+        while (i < firstLinkedList.size() && j < secondLinkedList.size()) {
+            if (firstLinkedList.get(i).compareTo(secondLinkedList.get(j)) < 0) {
+                mergeLinkedList.add(firstLinkedList.get(i));
+                i++;
+            } else {
+                mergeLinkedList.add(secondLinkedList.get(j));
+                j++;
+            }
+        }
+        if(i == firstLinkedList.size()) {
+            for (int k = j; k < secondLinkedList.size(); k++) {
+                mergeLinkedList.add(secondLinkedList.get(k));
+            }
+        }else {
+            for (int k = i; k < firstLinkedList.size(); k++) {
+                mergeLinkedList.add(firstLinkedList.get(k));
+            }
+        }
+        return mergeLinkedList;
     }
 
     private Node head; //Первый элемент списка

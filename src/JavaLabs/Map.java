@@ -1,142 +1,127 @@
 package JavaLabs;
 
-public class Map<K,V>
-{
-    public enum LIST_TYPE {LINKED_LIST, ARRAY_LIST}
+import org.jetbrains.annotations.NotNull;
 
-    public static class Entry<K, V>
-    {
-        public Entry()
-        {
+public class Map<K, V> {
+    public enum ListType {LINKED_LIST, ARRAY_LIST}
+
+    public static class Entry<K, V> {
+        public Entry() {
             this.key = null;
             this.value = null;
         }
-        public Entry(K key, V value)
-        {
+
+        public Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }
+
         public K key;
         public V value;
     }
 
     //Конструкторы:
 
-    public Map(LIST_TYPE type)
-    {
-        switch (type)
-        {
+    public Map(@NotNull ListType type) {
+        switch (type) {
             case LINKED_LIST -> this.data = new LinkedList<>();
             case ARRAY_LIST -> this.data = new ArrayList<>();
         }
-        this.default_value = null;
+        this.defaultValue = null;
     }
 
-    public Map()
-    {
-       this(LIST_TYPE.LINKED_LIST);
+    public Map() {
+        this(ListType.LINKED_LIST);
     }
 
     //Методы:
 
-    private int IndexOfKey(K key)
-    {
-        for (int i = 0; i<this.data.Size(); i++)
-            if(this.data.Get(i).key == key)
-                return i;
+    private int indexOfKey(K key) {
+        for (int i = 0; i < this.data.size(); i++) {
+            if (this.data.get(i).key == null) {
+                if (key == null) return i;
+            } else {
+                if (this.data.get(i).key.equals(key)) return i;
+            }
+        }
         return -1;
     }
 
-    public void Put(K key, V value)
-    {
-        if(this.ContainsKey(key))
-            data.Set(this.IndexOfKey(key), new Entry<>(key, value));
+    public void put(K key, V value) {
+        if (this.containsKey(key))
+            data.set(this.indexOfKey(key), new Entry<>(key, value));
         else
-            data.Add(new Entry<>(key, value));
+            data.add(new Entry<>(key, value));
     }
 
-    public V Get(K key)
-    {
-        int index = this.IndexOfKey(key);
-        return (index == -1) ? this.default_value : this.data.Get(index).value;
+    public V get(K key) {
+        int index = this.indexOfKey(key);
+        return (index == -1) ? this.defaultValue : this.data.get(index).value;
     }
 
-    public V GetOrDefault(K key, V default_value)
-    {
-        this.default_value = default_value;
-        return this.Get(key);
+    public V getOrDefault(K key, V default_value) {
+        this.defaultValue = default_value;
+        return this.get(key);
     }
 
-    public void SetDefaultValue(V default_value)
-    {
-        this.default_value = default_value;
+    public void setDefaultValue(V default_value) {
+        this.defaultValue = default_value;
     }
 
-    public V Remove(K key)
-    {
-        int index = IndexOfKey(key);
-        return (index == -1) ? this.default_value : this.data.Remove(index).value;
+    public V remove(K key) {
+        int index = indexOfKey(key);
+        return (index == -1) ? this.defaultValue : this.data.remove(index).value;
     }
 
-    public boolean ContainsKey(K key)
-    {
-        return this.IndexOfKey(key) != -1;
+    public boolean containsKey(K key) {
+        return this.indexOfKey(key) != -1;
     }
 
-    public List<K> GetKeys(LIST_TYPE type)
-    {
+    public List<K> getKeys(ListType type) {
         List<K> keys;
-        switch (type)
-        {
+        switch (type) {
             case LINKED_LIST -> keys = new LinkedList<>();
             case ARRAY_LIST -> keys = new ArrayList<>();
             default -> keys = new ArrayList<>();
         }
-        for (int i = 0; i<this.data.Size(); i++)
-            keys.Add(this.data.Get(i).key);
+        for (int i = 0; i < this.data.size(); i++)
+            keys.add(this.data.get(i).key);
         return keys;
     }
 
-    public List<K> GetKeys()
-    {
-        return this.GetKeys(LIST_TYPE.ARRAY_LIST);
+    public List<K> getKeys() {
+        return this.getKeys(ListType.ARRAY_LIST);
     }
 
-    public List<V> GetValues(LIST_TYPE type)
-    {
+    public List<V> getValues(ListType type) {
         List<V> values;
-        switch (type)
-        {
+        switch (type) {
             case LINKED_LIST -> values = new LinkedList<>();
             case ARRAY_LIST -> values = new ArrayList<>();
             default -> values = new ArrayList<>();
         }
-        for (int i = 0; i<this.data.Size(); i++)
-            values.Add(this.data.Get(i).value);
+        for (int i = 0; i < this.data.size(); i++)
+            values.add(this.data.get(i).value);
         return values;
     }
 
-    public List<V> GetValues()
-    {
-        return this.GetValues(LIST_TYPE.ARRAY_LIST);
+    public List<V> getValues() {
+        return this.getValues(ListType.ARRAY_LIST);
     }
 
-    public List<Entry<K,V>> GetEntries()
-    {
+    public List<Entry<K, V>> getEntries() {
         return this.data.clone();
     }
 
-    public int Size()
-    {
-        return this.data.Size();
+    public int size() {
+        return this.data.size();
     }
 
-    public boolean IsEmpty()
-    {
-        return this.data.IsEmpty();
+    public boolean isEmpty() {
+        return this.data.isEmpty();
     }
 
     //Приватные переменные:
     private List<Entry<K, V>> data;
-    private V default_value;
+    private V defaultValue;
 }
