@@ -1,4 +1,6 @@
-package JavaLabs;
+package JavaLabs.Containers;
+
+import java.util.Objects;
 
 public class LinkedList<T> implements List<T>, Cloneable {
     private class Node {
@@ -111,6 +113,29 @@ public class LinkedList<T> implements List<T>, Cloneable {
     }
 
     @Override
+    public boolean remove(T element) {
+        Node currentNode = this.head;
+        if (element == null) {
+            for (int i = 0; i < this.size(); i++) {
+                if (currentNode.data == null) {
+                    this.remove(i);
+                    return true;
+                }
+                currentNode = currentNode.next;
+            }
+        } else {
+            for (int i = 0; i < this.size(); i++) {
+                if (element.equals(currentNode.data)) {
+                    this.remove(i);
+                    return true;
+                }
+                currentNode = currentNode.next;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public T set(int index, T element) {
         if (index >= this.size)
             index = this.size - 1;
@@ -206,7 +231,7 @@ public class LinkedList<T> implements List<T>, Cloneable {
     }
 
     @Override
-    public List<T> clone() {
+    public LinkedList<T> clone() {
         LinkedList<T> clone = new LinkedList<>();
         Node current_node = this.head;
         for (int i = 0; i < this.size; i++) {
@@ -214,6 +239,37 @@ public class LinkedList<T> implements List<T>, Cloneable {
             current_node = current_node.next;
         }
         return clone;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder returnString = new StringBuilder("[");
+        Node currentNode = this.head;
+        for (int i = 0; i < this.size(); i++) {
+            if (i == this.size - 1) {
+                returnString.append(currentNode.data.toString());
+            } else {
+                returnString.append(currentNode.data.toString()).append(", ");
+            }
+            currentNode = currentNode.next;
+        }
+        returnString.append("]");
+        return returnString.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LinkedList)) return false;
+        LinkedList<?> that = (LinkedList<?>) o;
+        return size == that.size
+                && Objects.equals(head, that.head)
+                && Objects.equals(tail, that.tail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head, tail, size);
     }
 
     public static <T extends Comparable<T>> LinkedList<T> merge(LinkedList<T> firstLinkedList, LinkedList<T> secondLinkedList) {
@@ -228,11 +284,11 @@ public class LinkedList<T> implements List<T>, Cloneable {
                 j++;
             }
         }
-        if(i == firstLinkedList.size()) {
+        if (i == firstLinkedList.size()) {
             for (int k = j; k < secondLinkedList.size(); k++) {
                 mergeLinkedList.add(secondLinkedList.get(k));
             }
-        }else {
+        } else {
             for (int k = i; k < firstLinkedList.size(); k++) {
                 mergeLinkedList.add(firstLinkedList.get(k));
             }

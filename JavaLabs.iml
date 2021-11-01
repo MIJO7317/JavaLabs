@@ -16,5 +16,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jsoup-1.14.3-sources" level="project" />
+    <orderEntry type="library" name="icu4j-69_1-src" level="project" />
   </component>
 </module>

@@ -1,4 +1,4 @@
-package JavaLabs;
+package JavaLabs.Containers;
 
 import org.jetbrains.annotations.NotNull;
 

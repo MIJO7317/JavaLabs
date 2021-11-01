@@ -1,10 +1,13 @@
-package JavaLabs;
+package JavaLabs.Parser;
+
+import JavaLabs.Containers.List;
+import JavaLabs.Containers.Map;
 
 public class StringParser {
     public static String wordCount(String string) {
         Map<String, Integer> wordCountMap = new Map<>();
         for (String word :
-                string.trim().split(" ")) {
+                string.replaceAll("\\s+", " ").trim().split(" ")) {
             wordCountMap.put(word, wordCountMap.get(word) == null ? 1 : wordCountMap.get(word) + 1);
         }
         StringBuilder returnString = new StringBuilder();
@@ -17,7 +20,7 @@ public class StringParser {
     public static String trimRepeat(String string) {
         Map<String, Object> wordMap = new Map<>();
         for (String word :
-                string.trim().split(" ")) {
+                string.replaceAll("\\s+", " ").trim().split(" ")) {
             wordMap.put(word, null);
         }
         StringBuilder returnString = new StringBuilder();

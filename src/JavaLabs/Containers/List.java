@@ -1,4 +1,4 @@
-package JavaLabs;
+package JavaLabs.Containers;
 
 public interface List<T> {
     void add(T element);
@@ -11,6 +11,8 @@ public interface List<T> {
 
     T remove(int index);
 
+    boolean remove(T element);
+
     T set(int index, T element);
 
     boolean contains(T element);
@@ -22,4 +24,13 @@ public interface List<T> {
     int size();
 
     List<T> clone();
+
+    @Override
+    boolean equals(Object o);
+
+    @Override
+    int hashCode();
+
+    @Override
+    String toString();
 }

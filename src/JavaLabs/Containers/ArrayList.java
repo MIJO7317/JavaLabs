@@ -1,4 +1,7 @@
-package JavaLabs;
+package JavaLabs.Containers;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 public class ArrayList<T> implements List<T>, Cloneable {
     //Конструкторы:
@@ -108,6 +111,26 @@ public class ArrayList<T> implements List<T>, Cloneable {
     }
 
     @Override
+    public boolean remove(T element) {
+        if (element == null) {
+            for (int i = 0; i < this.size(); i++) {
+                if (this.data[i] == null) {
+                    this.remove(i);
+                    return true;
+                }
+            }
+        } else {
+            for (int i = 0; i < this.size(); i++) {
+                if (element.equals(this.data[i])) {
+                    this.remove(i);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public T set(int index, T element) {
         if (index >= this.size)
             index = this.size - 1;
@@ -157,11 +180,43 @@ public class ArrayList<T> implements List<T>, Cloneable {
     }
 
     @Override
-    public List<T> clone() {
+    public ArrayList<T> clone() {
         ArrayList<T> clone = new ArrayList<>();
         for (int i = 0; i < this.size; i++)
             clone.add(this.get(i));
         return clone;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder returnString = new StringBuilder("[");
+        for (int i = 0; i < this.size(); i++) {
+            if (i == this.size - 1) {
+                returnString.append(this.data[i].toString());
+            } else {
+                returnString.append(this.data[i].toString()).append(", ");
+            }
+        }
+        returnString.append("]");
+        return returnString.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArrayList)) return false;
+        ArrayList<?> arrayList = (ArrayList<?>) o;
+        return size == arrayList.size
+                && additional == arrayList.additional
+                && buffer == arrayList.buffer
+                && Arrays.equals(data, arrayList.data);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(size, additional, buffer);
+        result = 31 * result + Arrays.hashCode(data);
+        return result;
     }
 
     public int capacity() {
