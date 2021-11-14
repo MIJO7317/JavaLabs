@@ -1,12 +1,12 @@
 package JavaLabs.AccountantBot;
 
-import com.ibm.icu.text.Transliterator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class Employee {
     public enum Gender {MALE, FEMALE}
@@ -204,9 +204,20 @@ public class Employee {
                                         + minAge);
                     }
                 }
-                final String CYRILLIC_TO_LATIN = "Russian-Latin/BGN";
-                Transliterator toLatinTrans = Transliterator.getInstance(CYRILLIC_TO_LATIN);
-                String eMail = toLatinTrans.transliterate(givenName.charAt(0) + surName) + "@mail.ru";
+                Function<String, String> transliterate = (message) -> {
+                    char[] abcCyr =   {' ','а','б','в','г','д','е','ё', 'ж','з','и','й','к','л','м','н','о','п','р','с','т','у','ф','х', 'ц','ч', 'ш','щ','ъ','ы','ь','э', 'ю','я','А','Б','В','Г','Д','Е','Ё', 'Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х', 'Ц', 'Ч','Ш', 'Щ','Ъ','Ы','Ь','Э','Ю','Я','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+                    String[] abcLat = {" ","a","b","v","g","d","e","e","zh","z","i","y","k","l","m","n","o","p","r","s","t","u","f","h","ts","ch","sh","sch", "","i", "","e","ju","ja","A","B","V","G","D","E","E","Zh","Z","I","Y","K","L","M","N","O","P","R","S","T","U","F","H","Ts","Ch","Sh","Sch", "","I", "","E","Ju","Ja","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int j = 0; j < message.length(); j++) {
+                        for (int x = 0; x < abcCyr.length; x++ ) {
+                            if (message.charAt(j) == abcCyr[x]) {
+                                stringBuilder.append(abcLat[x]);
+                            }
+                        }
+                    }
+                    return stringBuilder.toString();
+                };
+                String eMail = transliterate.apply(givenName.charAt(0) + surName) + "@mail.ru";
                 builder.setEMail(eMail);
                 String phone = "+7 (" + phoneCodes[randomNumber.nextInt(phoneCodes.length)] + ") "
                         + randomNumber.nextInt(10)
@@ -248,28 +259,27 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Работник\n" +
-                "Имя:\t\t\t\t" + givenName + '\n' +
-                "Фамилия:\t\t\t" + surName + '\n' +
-                "Возраст:\t\t\t" + age + '\n' +
-                "Пол:\t\t\t\t" + (gender.equals(Gender.MALE) ? "Мужской" : "Женский") + '\n' +
-                "Роль:\t\t\t\t" + (role.equals(Role.STAFF) ? "Сотрудник" :
-                                   role.equals(Role.MANAGER) ? "Менеджер" :
-                                   role.equals(Role.EXECUTIVE) ? "Администратор" : "") + '\n' +
-                "Отдел:\t\t\t\t" + (dept.equals(Dept.IT) ? "IT" :
-                                    dept.equals(Dept.FINANCE) ? "Финансов" :
-                                    dept.equals(Dept.HUMAN_RESOURCES) ? "Кадров" :
-                                    dept.equals(Dept.LOGISTICS) ? "Логистики" :
-                                    dept.equals(Dept.MARKETING) ? "Маркетинга" :
-                                    dept.equals(Dept.PURCHASING) ? "Закупок" :
-                                    dept.equals(Dept.RESEARCH_AND_DEVELOPMENT) ? "Исследования и развития" :
-                                    dept.equals(Dept.SALES) ? "Продаж" : "") + '\n' +
-                "Электронная почта:\t" + eMail + '\n' +
-                "Телефон:\t\t\t" + phone + '\n' +
-                "Адрес:\t\t\t\t" + address + '\n' +
-                "Город:\t\t\t\t" + city + '\n' +
-                "Область:\t\t\t" + state + '\n' +
-                "Код области:\t\t" + stateCode + '\n';
+        return "Имя:\t\t\t\t" + givenName + '\n' +
+               "Фамилия:\t\t\t" + surName + '\n' +
+               "Возраст:\t\t\t" + age + '\n' +
+               "Пол:\t\t\t\t" + (gender.equals(Gender.MALE) ? "Мужской" : "Женский") + '\n' +
+               "Роль:\t\t\t\t" + (role.equals(Role.STAFF) ? "Сотрудник" :
+                                  role.equals(Role.MANAGER) ? "Менеджер" :
+                                  role.equals(Role.EXECUTIVE) ? "Администратор" : "") + '\n' +
+               "Отдел:\t\t\t\t" + (dept.equals(Dept.IT) ? "IT" :
+                                   dept.equals(Dept.FINANCE) ? "Финансов" :
+                                   dept.equals(Dept.HUMAN_RESOURCES) ? "Кадров" :
+                                   dept.equals(Dept.LOGISTICS) ? "Логистики" :
+                                   dept.equals(Dept.MARKETING) ? "Маркетинга" :
+                                   dept.equals(Dept.PURCHASING) ? "Закупок" :
+                                   dept.equals(Dept.RESEARCH_AND_DEVELOPMENT) ? "Исследования и развития" :
+                                   dept.equals(Dept.SALES) ? "Продаж" : "") + '\n' +
+               "Электронная почта:\t" + eMail + '\n' +
+               "Телефон:\t\t\t" + phone + '\n' +
+               "Адрес:\t\t\t\t" + address + '\n' +
+               "Город:\t\t\t\t" + city + '\n' +
+               "Область:\t\t\t" + state + '\n' +
+               "Код области:\t\t" + stateCode + '\n';
     }
 
     @Override
