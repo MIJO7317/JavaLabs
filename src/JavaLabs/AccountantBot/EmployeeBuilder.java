@@ -22,7 +22,7 @@ public class EmployeeBuilder {
         this.role = role;
     }
 
-    public void setDept(String dept) {
+    public void setDept(Employee.Dept dept) {
         this.dept = dept;
     }
 
@@ -61,7 +61,7 @@ public class EmployeeBuilder {
     private int age;
     private Employee.Gender gender;
     private Employee.Role role;
-    private String dept;
+    private Employee.Dept dept;
     private String eMail;
     private String phone;
     private String address;

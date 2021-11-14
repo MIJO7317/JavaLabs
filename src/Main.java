@@ -1,15 +1,11 @@
+import JavaLabs.AccountantBot.Accountant;
 import JavaLabs.AccountantBot.Employee;
-import JavaLabs.AccountantBot.Government;
+import JavaLabs.AccountantBot.Example;
 import JavaLabs.Containers.ArrayList;
 import JavaLabs.Containers.LinkedList;
 import JavaLabs.Containers.List;
 import JavaLabs.Containers.Map;
 import JavaLabs.Parser.StringParser;
-import com.ibm.icu.text.Transliterator;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
 
 public class Main
 {
@@ -68,11 +64,6 @@ public class Main
         list3.add(3);
         list3.add(5);
         System.out.println(list3);
-        Government.addState("Moscow Region", "1");
-        Government.addState("Orel Region", "2");
-        Government.addCity("Moscow", Government.getState("Moscow Region"));
-        //Government.addCity("Moscow", Government.getState("Moscow Regon"));
-        System.out.println(Government.states.toString());
 //        Document doc;
 //        String address = "NaN";
 //        String street = "NaN";
@@ -95,7 +86,12 @@ public class Main
 //        final String CYRILLIC_TO_LATIN = "Russian-Latin/BGN";
 //        Transliterator toLatinTrans = Transliterator.getInstance(CYRILLIC_TO_LATIN);
 //        System.out.println(toLatinTrans.transliterate("Вера Брежнева"));
-        ArrayList<Employee> employees = Employee.createShortList();
-        System.out.println(employees.get(0));
+
+
+        Example.payPremiumWomen();
+        Example.paySalaryFromDept(Employee.Dept.IT);
+        Example.payPremiumOverThirtyFromDept(Employee.Dept.RESEARCH_AND_DEVELOPMENT);
+        Example.paySalaryManagers();
+        Example.payPremiumStaff();
     }
 }

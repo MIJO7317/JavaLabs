@@ -1,11 +1,11 @@
 package JavaLabs.AccountantBot;
 
-import JavaLabs.Containers.ArrayList;
 import com.ibm.icu.text.Transliterator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Employee {
@@ -13,8 +13,11 @@ public class Employee {
 
     public enum Role {STAFF, MANAGER, EXECUTIVE}
 
+    public enum Dept {HUMAN_RESOURCES, MARKETING, SALES, FINANCE, LOGISTICS,
+                      IT, PURCHASING, RESEARCH_AND_DEVELOPMENT}
+
     public Employee(String givenName, String surName, int age, Gender gender,
-                    Role role, String dept, String eMail, String phone,
+                    Role role, Dept dept, String eMail, String phone,
                     String address, String city, String state,
                     String stateCode) {
         this.givenName = givenName;
@@ -51,7 +54,7 @@ public class Employee {
         return role;
     }
 
-    public String getDept() {
+    public Dept getDept() {
         return dept;
     }
 
@@ -103,7 +106,7 @@ public class Employee {
                 "Максимов", "Козлов", "Ильин", "Герасимов", "Марков",
                 "Новиков", "Морозов", "Романов", "Осипов", "Макаров", "Зайцев",
                 "Беляев", "Гаврилов", "Антонов", "Ефимов", "Леонтьев",
-                "Давыдов", "Гусев", "Данилов", "Киселёв", "Сорокин",
+                "Давыдов", "Гусев", "Данилов", "Киселев", "Сорокин",
                 "Тихомиров", "Крылов", "Никифоров", "Кондратьев", "Кудрявцев",
                 "Борисов", "Жуков", "Воробьёв", "Щербаков", "Поляков",
                 "Савельев", "Шмидт", "Трофимов", "Чистяков", "Баранов",
@@ -116,7 +119,7 @@ public class Employee {
         String[] femaleSurNames = {"Иванова", "Васильева", "Петрова", "Смирнова",
                 "Михайлова", "Фёдорова", "Соколова", "Яковлева", "Попова",
                 "Андреева", "Алексеева", "Александрова", "Лебедева", "Григорьева",
-                "Степанова", "Семёнова", "Павлова", "Богданова", "Николаева",
+                "Степанова", "Семенова", "Павлова", "Богданова", "Николаева",
                 "Дмитриева", "Егорова", "Волкова", "Кузнецова", "Никитина",
                 "Соловьёва", "Тимофеева", "Орлова", "Афанасьева", "Филиппова",
                 "Сергеева", "Захарова", "Матвеева", "Виноградова", "Кузьмина",
@@ -136,9 +139,6 @@ public class Employee {
         int minAge = 18;
         int maxFemaleAge = 56;
         int maxMaleAge = 61;
-        String[] depts = {"Отдел кадров", "Отдел маркетинга", "Отдел продаж",
-                "Отдел финансов", "Отдел логистики", "Отдел IT",
-                "Отдел закупок", "Отдел исследования и развития"};
         String[] phoneCodes = {"903", "909", "963", "964", "965", "966", "967",
                 "968", "989", "929", "900", "901", "902", "908", "953", "958"};
         String[] states = {"Амурская область", "Архангельская область",
@@ -166,75 +166,82 @@ public class Employee {
                 "Ярославская область"};
         ArrayList<Employee> employees = new ArrayList<>();
         SecureRandom randomNumber = new SecureRandom();
-        for (String dept : depts) {
+        for (Dept dept : Dept.values()) {
             EmployeeBuilder builder = new EmployeeBuilder();
             String givenName = "";
             String surName = "";
-            builder.setRole(Role.EXECUTIVE);
-            builder.setDept(dept);
-            switch (Gender.values()[randomNumber.nextInt(Gender.values().length)]) {
-                case MALE -> {
-                    builder.setGender(Gender.MALE);
-                    givenName = maleNames[randomNumber.nextInt(maleNames.length)];
-                    surName = maleSurNames[randomNumber.nextInt(maleSurNames.length)];
-                    builder.setGivenName(givenName);
-                    builder.setSurName(surName);
-                    builder.setAge(
-                            randomNumber.nextInt(maxMaleAge - minAge + 1)
-                                    + minAge);
+            int quantityOfStaff = 3 + randomNumber.nextInt(8);
+            for (int i = 0; i < quantityOfStaff; i++) {
+                if(i == 0) {
+                    builder.setRole(Role.EXECUTIVE);
                 }
-                case FEMALE -> {
-                    builder.setGender(Gender.FEMALE);
-                    givenName = femaleNames[randomNumber.nextInt(femaleNames.length)];
-                    surName = femaleSurNames[randomNumber.nextInt(femaleSurNames.length)];
-                    builder.setGivenName(givenName);
-                    builder.setSurName(surName);
-                    builder.setAge(
-                            randomNumber.nextInt(maxFemaleAge - minAge + 1)
-                                    + minAge);
+                else if(i > (quantityOfStaff-1)*0.77) {
+                    builder.setRole(Role.MANAGER);
                 }
-            }
-            final String CYRILLIC_TO_LATIN = "Russian-Latin/BGN";
-            Transliterator toLatinTrans = Transliterator.getInstance(CYRILLIC_TO_LATIN);
-            String eMail = toLatinTrans.transliterate(givenName.charAt(0) + surName) + "@mail.ru";
-            builder.setEMail(eMail);
-            String phone = "+7 (" + phoneCodes[randomNumber.nextInt(phoneCodes.length)] + ") "
-                    + randomNumber.nextInt(10)
-                    + randomNumber.nextInt(10)
-                    + randomNumber.nextInt(10)
-                    + "-"
-                    + randomNumber.nextInt(10)
-                    + randomNumber.nextInt(10)
-                    + "-"
-                    + randomNumber.nextInt(10)
-                    + randomNumber.nextInt(10);
-            builder.setPhone(phone);
-            Document doc;
-            String address = "NaN";
-            String street;
-            String house;
-            String city = "NaN";
-            String state = "NaN";
-            try {
-                doc = Jsoup.connect("https://getfakedata.com/address/ru_RU").get();
-                street = doc.body().getElementsByTag("textarea").get(0).text().split("\n")[0].split(",")[3].trim();
-                house = doc.body().getElementsByTag("textarea").get(0).text().split("\n")[0].split(",")[4].trim();
-                city = doc.body().getElementsByTag("textarea").get(0).text().split("\n")[0].split(",")[2].trim();
-                state = doc.body().getElementsByTag("textarea").get(0).text().split("\n")[0].split(",")[1].trim();
-                address = street + ", " + house;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            builder.setAddress(address);
-            builder.setCity(city);
-            builder.setState(state);
-            for (int j = 0; j < states.length; j++) {
-                if (state.equals(states[j])) {
-                    builder.setStateCode(String.valueOf(28 + j));
-                    break;
+                else {
+                    builder.setRole(Role.STAFF);
                 }
+                builder.setDept(dept);
+                switch (Gender.values()[randomNumber.nextInt(Gender.values().length)]) {
+                    case MALE -> {
+                        builder.setGender(Gender.MALE);
+                        givenName = maleNames[randomNumber.nextInt(maleNames.length)];
+                        surName = maleSurNames[randomNumber.nextInt(maleSurNames.length)];
+                        builder.setGivenName(givenName);
+                        builder.setSurName(surName);
+                        builder.setAge(
+                                randomNumber.nextInt(maxMaleAge - minAge + 1)
+                                        + minAge);
+                    }
+                    case FEMALE -> {
+                        builder.setGender(Gender.FEMALE);
+                        givenName = femaleNames[randomNumber.nextInt(femaleNames.length)];
+                        surName = femaleSurNames[randomNumber.nextInt(femaleSurNames.length)];
+                        builder.setGivenName(givenName);
+                        builder.setSurName(surName);
+                        builder.setAge(
+                                randomNumber.nextInt(maxFemaleAge - minAge + 1)
+                                        + minAge);
+                    }
+                }
+                final String CYRILLIC_TO_LATIN = "Russian-Latin/BGN";
+                Transliterator toLatinTrans = Transliterator.getInstance(CYRILLIC_TO_LATIN);
+                String eMail = toLatinTrans.transliterate(givenName.charAt(0) + surName) + "@mail.ru";
+                builder.setEMail(eMail);
+                String phone = "+7 (" + phoneCodes[randomNumber.nextInt(phoneCodes.length)] + ") "
+                        + randomNumber.nextInt(10)
+                        + randomNumber.nextInt(10)
+                        + randomNumber.nextInt(10)
+                        + "-"
+                        + randomNumber.nextInt(10)
+                        + randomNumber.nextInt(10)
+                        + "-"
+                        + randomNumber.nextInt(10)
+                        + randomNumber.nextInt(10);
+                builder.setPhone(phone);
+                Document doc;
+                String address = "NaN";
+                String street;
+                String house;
+                String city = "NaN";
+                String state = "NaN";
+                try {
+                    doc = Jsoup.connect("https://getfakedata.com/address/ru_RU").get();
+                    street = doc.body().getElementsByTag("textarea").get(0).text().split("\n")[0].split(",")[3].trim();
+                    house = doc.body().getElementsByTag("textarea").get(0).text().split("\n")[0].split(",")[4].trim();
+                    city = doc.body().getElementsByTag("textarea").get(0).text().split("\n")[0].split(",")[2].trim();
+                    int statePosition = randomNumber.nextInt(states.length);
+                    builder.setStateCode(String.valueOf(28 + statePosition));
+                    state = states[statePosition];
+                    address = street + ", " + house;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                builder.setAddress(address);
+                builder.setCity(city);
+                builder.setState(state);
+                employees.add(builder.getResult());
             }
-            employees.add(builder.getResult());
         }
         return employees;
     }
@@ -246,8 +253,17 @@ public class Employee {
                 "Фамилия:\t\t\t" + surName + '\n' +
                 "Возраст:\t\t\t" + age + '\n' +
                 "Пол:\t\t\t\t" + (gender.equals(Gender.MALE) ? "Мужской" : "Женский") + '\n' +
-                "Роль:\t\t\t\t" + (role.equals(Role.STAFF) ? "Сотрудник" : role.equals(Role.MANAGER) ? "Менеджер" : "Администратор") + '\n' +
-                "Отдел:\t\t\t\t" + dept + '\n' +
+                "Роль:\t\t\t\t" + (role.equals(Role.STAFF) ? "Сотрудник" :
+                                   role.equals(Role.MANAGER) ? "Менеджер" :
+                                   role.equals(Role.EXECUTIVE) ? "Администратор" : "") + '\n' +
+                "Отдел:\t\t\t\t" + (dept.equals(Dept.IT) ? "IT" :
+                                    dept.equals(Dept.FINANCE) ? "Финансов" :
+                                    dept.equals(Dept.HUMAN_RESOURCES) ? "Кадров" :
+                                    dept.equals(Dept.LOGISTICS) ? "Логистики" :
+                                    dept.equals(Dept.MARKETING) ? "Маркетинга" :
+                                    dept.equals(Dept.PURCHASING) ? "Закупок" :
+                                    dept.equals(Dept.RESEARCH_AND_DEVELOPMENT) ? "Исследования и развития" :
+                                    dept.equals(Dept.SALES) ? "Продаж" : "") + '\n' +
                 "Электронная почта:\t" + eMail + '\n' +
                 "Телефон:\t\t\t" + phone + '\n' +
                 "Адрес:\t\t\t\t" + address + '\n' +
@@ -287,7 +303,7 @@ public class Employee {
     private final int age;
     private final Gender gender;
     private final Role role;
-    private final String dept;
+    private final Dept dept;
     private final String eMail;
     private final String phone;
     private final String address;
