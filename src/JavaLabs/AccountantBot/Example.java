@@ -1,8 +1,9 @@
 package JavaLabs.AccountantBot;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.List;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 public class Example {
@@ -67,10 +68,10 @@ public class Example {
 
     public static void exampleConsumer() {
         //Print info about first person by name
-        Consumer<String> consumer;
-        consumer = (name) -> {
+        Consumer<String> printInfoByName;
+        printInfoByName = (name) -> {
             System.out.println("Информация о первом человеке с именем " + name + ":");
-            for (Employee employee:employees) {
+            for (Employee employee : employees) {
                 if (employee.getGivenName().equals(name)) {
                     System.out.println(employee);
                     return;
@@ -78,14 +79,14 @@ public class Example {
             }
             System.out.println("Человек с таким именем не найден.\n");
         };
-        consumer.accept("Александр");
-        consumer.accept("Мария");
+        printInfoByName.accept("Александр");
+        printInfoByName.accept("Мария");
     }
 
     public static void exampleFunction() {
-        //Get age by name
-        Function<String, Integer> function;
-        function = (name) -> {
+        //Get age of first person by name
+        Function<String, Integer> getAgeByName;
+        getAgeByName = (name) -> {
             for (Employee employee:employees) {
                 if (employee.getGivenName().equals(name)) {
                     return employee.getAge();
@@ -93,21 +94,56 @@ public class Example {
             }
             return null;
         };
+
         String name = "Кирилл";
         System.out.println("Возраст человека с именем " + name + ":");
-        Integer age = function.apply(name);
+        Integer age = getAgeByName.apply(name);
         if(age == null) {
             System.out.println("Человек с таким именем не найден.\n");
         } else {
-            System.out.println("Возраст равен " + age + "\n");
+            System.out.println("Возраст равен " + age + ".\n");
         }
+
         name = "Полина";
         System.out.println("Возраст человека с именем " + name + ":");
-        age = function.apply(name);
+        age = getAgeByName.apply(name);
         if(age == null) {
             System.out.println("Человек с таким именем не найден.\n");
         } else {
-            System.out.println("Возраст равен" + age + "\n");
+            System.out.println("Возраст равен " + age + ".\n");
         }
+    }
+
+    public static void exampleSupplier() {
+        //Get List of men
+        Supplier<List<Employee>> getListOfMen;
+        getListOfMen = () -> {
+            List<Employee> employeeList = new ArrayList<>();
+            for (Employee employee : employees) {
+                if (employee.getGender() == Employee.Gender.MALE) {
+                    employeeList.add(employee);
+                }
+            }
+            return employeeList;
+        };
+        System.out.println("Работники мужчины:");
+        for (Employee employee : getListOfMen.get()) {
+            System.out.println(employee.getGivenName() + " " + employee.getSurName());
+        }
+        System.out.println();
+    }
+
+    public static void exampleBiPredicate() {
+        //Compare two Employees by age
+        BiPredicate<Employee, Employee> compareEmployeesByAge;
+        compareEmployeesByAge = (firstEmployee, secondEmployee) -> firstEmployee.getAge() == secondEmployee.getAge();
+        SecureRandom secureRandom = new SecureRandom();
+        Employee firstEmployee = employees.get(secureRandom.nextInt(employees.size()));
+        Employee secondEmployee = employees.get(secureRandom.nextInt(employees.size()));
+        System.out.println(firstEmployee.getGivenName() + " " + firstEmployee.getSurName()
+                            + " ( возраст " + firstEmployee.getAge() + " ) "
+                            + "и " + secondEmployee.getGivenName() + " " + secondEmployee.getSurName()
+                            + " ( возраст " + secondEmployee.getAge() + " ) "
+                            + (compareEmployeesByAge.test(firstEmployee, secondEmployee) ? "одногодки." : "не одногодки.") );
     }
 }

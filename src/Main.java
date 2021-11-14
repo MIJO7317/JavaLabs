@@ -19,5 +19,7 @@ public class Main
 
         Example.exampleConsumer();
         Example.exampleFunction();
+        Example.exampleSupplier();
+        Example.exampleBiPredicate();
     }
 }
