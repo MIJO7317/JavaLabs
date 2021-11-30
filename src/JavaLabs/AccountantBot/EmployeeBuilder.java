@@ -14,15 +14,15 @@ public class EmployeeBuilder {
         this.age = age;
     }
 
-    public void setGender(Employee.Gender gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public void setRole(Employee.Role role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public void setDept(Employee.Dept dept) {
+    public void setDept(Dept dept) {
         this.dept = dept;
     }
 
@@ -50,22 +50,27 @@ public class EmployeeBuilder {
         this.stateCode = stateCode;
     }
 
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
     public Employee getResult() {
         return new Employee(this.givenName, this.surName, this.age,
                 this.gender, this.role, this.dept, this.eMail, this.phone,
-                this.address, this.city, this.state, this.stateCode);
+                this.address, this.city, this.state, this.stateCode, this.salary);
     }
 
     private String givenName;
     private String surName;
     private int age;
-    private Employee.Gender gender;
-    private Employee.Role role;
-    private Employee.Dept dept;
+    private Gender gender;
+    private Role role;
+    private Dept dept;
     private String eMail;
     private String phone;
     private String address;
     private String city;
     private String state;
     private String stateCode;
+    private double salary;
 }

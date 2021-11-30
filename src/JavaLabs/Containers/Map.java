@@ -78,12 +78,10 @@ public class Map<K, V> {
     }
 
     public List<K> getKeys(ListType type) {
-        List<K> keys;
-        switch (type) {
+        List<K> keys = switch (type) {
             case LINKED_LIST -> keys = new LinkedList<>();
             case ARRAY_LIST -> keys = new ArrayList<>();
-            default -> keys = new ArrayList<>();
-        }
+        };
         for (int i = 0; i < this.data.size(); i++)
             keys.add(this.data.get(i).key);
         return keys;
@@ -94,12 +92,10 @@ public class Map<K, V> {
     }
 
     public List<V> getValues(ListType type) {
-        List<V> values;
-        switch (type) {
+        List<V> values = switch (type) {
             case LINKED_LIST -> values = new LinkedList<>();
             case ARRAY_LIST -> values = new ArrayList<>();
-            default -> values = new ArrayList<>();
-        }
+        };
         for (int i = 0; i < this.data.size(); i++)
             values.add(this.data.get(i).value);
         return values;

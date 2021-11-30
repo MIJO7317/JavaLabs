@@ -3,40 +3,40 @@ package JavaLabs.AccountantBot;
 public class Accountant {
     public static String paySalary(Employee employee) {
         return switch (employee.getRole()) {
-            case EXECUTIVE -> (employee.getGender() == Employee.Gender.FEMALE ? "Работница " : "Работник ")
+            case EXECUTIVE -> (employee.getGender() == Gender.FEMALE ? "Работница " : "Работник ")
                     + employee.getGivenName() + " " + employee.getSurName()
                     + " с ролью Администратор "
-                    + (employee.getGender() == Employee.Gender.FEMALE ? "получила" : "получил")
+                    + (employee.getGender() == Gender.FEMALE ? "получила" : "получил")
                     + " зарплату в размере " + Accountant.executiveSalary + " рублей";
-            case MANAGER -> (employee.getGender() == Employee.Gender.FEMALE ? "Работница " : "Работник ")
+            case MANAGER -> (employee.getGender() == Gender.FEMALE ? "Работница " : "Работник ")
                     + employee.getGivenName() + " " + employee.getSurName()
                     + " с ролью Менеджер "
-                    + (employee.getGender() == Employee.Gender.FEMALE ? "получила" : "получил")
+                    + (employee.getGender() == Gender.FEMALE ? "получила" : "получил")
                     + " зарплату в размере " + Accountant.managerSalary + " рублей";
-            case STAFF -> (employee.getGender() == Employee.Gender.FEMALE ? "Работница " : "Работник ")
+            case STAFF -> (employee.getGender() == Gender.FEMALE ? "Работница " : "Работник ")
                     + employee.getGivenName() + " " + employee.getSurName()
                     + " с ролью Сотрудник "
-                    + (employee.getGender() == Employee.Gender.FEMALE ? "получила" : "получил")
+                    + (employee.getGender() == Gender.FEMALE ? "получила" : "получил")
                     + " зарплату в размере " + Accountant.staffSalary + " рублей";
         };
     }
 
     public static String payPremium(Employee employee) {
         return switch (employee.getRole()) {
-            case EXECUTIVE -> (employee.getGender() == Employee.Gender.FEMALE ? "Работница " : "Работник ")
+            case EXECUTIVE -> (employee.getGender() == Gender.FEMALE ? "Работница " : "Работник ")
                     + employee.getGivenName() + " " + employee.getSurName()
                     + " с ролью Администратор "
-                    + (employee.getGender() == Employee.Gender.FEMALE ? "получила" : "получил")
+                    + (employee.getGender() == Gender.FEMALE ? "получила" : "получил")
                     + " премию в размере " + 0.3 * Accountant.executiveSalary + " рублей";
-            case MANAGER -> (employee.getGender() == Employee.Gender.FEMALE ? "Работница " : "Работник ")
+            case MANAGER -> (employee.getGender() == Gender.FEMALE ? "Работница " : "Работник ")
                     + employee.getGivenName() + " " + employee.getSurName()
                     + " с ролью Менеджер "
-                    + (employee.getGender() == Employee.Gender.FEMALE ? "получила" : "получил")
+                    + (employee.getGender() == Gender.FEMALE ? "получила" : "получил")
                     + " премию в размере " + 0.2 * Accountant.managerSalary + " рублей";
-            case STAFF -> (employee.getGender() == Employee.Gender.FEMALE ? "Работница " : "Работник ")
+            case STAFF -> (employee.getGender() == Gender.FEMALE ? "Работница " : "Работник ")
                     + employee.getGivenName() + " " + employee.getSurName()
                     + " с ролью Сотрудник "
-                    + (employee.getGender() == Employee.Gender.FEMALE ? "получила" : "получил")
+                    + (employee.getGender() == Gender.FEMALE ? "получила" : "получил")
                     + " премию в размере " + 0.1 * Accountant.staffSalary + " рублей";
         };
     }

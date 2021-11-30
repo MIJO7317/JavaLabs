@@ -9,17 +9,10 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class Employee {
-    public enum Gender {MALE, FEMALE}
-
-    public enum Role {STAFF, MANAGER, EXECUTIVE}
-
-    public enum Dept {HUMAN_RESOURCES, MARKETING, SALES, FINANCE, LOGISTICS,
-                      IT, PURCHASING, RESEARCH_AND_DEVELOPMENT}
-
     public Employee(String givenName, String surName, int age, Gender gender,
                     Role role, Dept dept, String eMail, String phone,
                     String address, String city, String state,
-                    String stateCode) {
+                    String stateCode, double salary) {
         this.givenName = givenName;
         this.surName = surName;
         this.age = age;
@@ -32,6 +25,7 @@ public class Employee {
         this.city = city;
         this.state = state;
         this.stateCode = stateCode;
+        this.salary = salary;
     }
 
     public String getGivenName() {
@@ -80,6 +74,10 @@ public class Employee {
 
     public String getStateCode() {
         return stateCode;
+    }
+
+    public double getSalary() {
+        return salary;
     }
 
     public static ArrayList<Employee> createShortList() {
@@ -174,12 +172,15 @@ public class Employee {
             for (int i = 0; i < quantityOfStaff; i++) {
                 if(i == 0) {
                     builder.setRole(Role.EXECUTIVE);
+                    builder.setSalary(executiveSalary);
                 }
                 else if(i > (quantityOfStaff-1)*0.77) {
                     builder.setRole(Role.MANAGER);
+                    builder.setSalary(managerSalary);
                 }
                 else {
                     builder.setRole(Role.STAFF);
+                    builder.setSalary(staffSalary);
                 }
                 builder.setDept(dept);
                 switch (Gender.values()[randomNumber.nextInt(Gender.values().length)]) {
@@ -305,7 +306,7 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(getGivenName(), getSurName(), getAge(),
                 getGender(), getRole(), getDept(), getEMail(), getPhone(),
-                getAddress(), getCity(), getState(), getStateCode());
+                getAddress(), getCity(), getState(), getStateCode(), getSalary());
     }
 
     private final String givenName;
@@ -320,4 +321,9 @@ public class Employee {
     private final String city;
     private final String state;
     private final String stateCode;
+    private final double salary;
+
+    private static final double executiveSalary = 150000;
+    private static final double managerSalary = 70000;
+    private static final double staffSalary = 40000;
 }
